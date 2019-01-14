@@ -313,6 +313,7 @@ export default class Simulation {
                                     visualisation.toggleActiveAll(chairs[i].path, i);
                                 }
 
+                                // current position of chair
                                 start = that.getPosition();
 
                                 /**
@@ -347,21 +348,24 @@ export default class Simulation {
                                 // console.log('direction: ' + dir);
                                 // console.log('-------------------------');
 
+                                // if chair angle is far from wanted angle
                                 if (Math.abs(endAngle - that.getPosition().bearing) > 7.5) {
                                     that.move({motionType: 'Rotation', velocity: 0.5 * dir});
-                                    console.log('rotate fast');
+                                    // console.log('rotate fast');
                                 }
+
+                                // if chair angle is far from wanted angle
                                 else if (Math.abs(endAngle - that.getPosition().bearing) > 2.5) {
                                     that.move({motionType: 'Rotation', velocity: 0.05 * dir});
-                                    console.log('rotate slow');
+                                    // console.log('rotate slow');
                                 }
                                 else if (distance > 50) {
                                     that.move({motionType: 'Straight', velocity: 1.0});
-                                    console.log('drive fast');
+                                    // console.log('drive fast');
                                 }
                                 else if (distance > 15) {
                                     that.move({motionType: 'Straight', velocity: 0.5});
-                                    console.log('drive slow');
+                                    // console.log('drive slow');
                                 }
                                 else {
                                     console.log('Finished');
@@ -529,13 +533,6 @@ export default class Simulation {
                         this.setPosition(marker, chairs[index]);
                     }
                 });
-
-                destination = [
-                    graph.grid[1][3],
-                    graph.grid[2][3],
-                    graph.grid[4][3],
-                    graph.grid[5][3]
-                ];
             }
         }
     }
