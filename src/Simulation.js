@@ -1,4 +1,4 @@
-import {Engine, Render, World, Bodies, Body, Events} from 'matter-js';
+import { Engine, Render, World, Bodies, Body, Events } from 'matter-js';
 import { astar, Graph } from './astar';
 import Visualisation from './Visualisation';
 
@@ -173,7 +173,6 @@ export default class Simulation {
                         },
                         setLastNode() {
                             this.lastNode = this.path[this.path.length - 1];
-                            console.log(this.lastNode);
                         },
                         getMousePosition(e) {
                             this.setMousePosition(e);
@@ -235,17 +234,14 @@ export default class Simulation {
                 return
             },
             setObstacle(node) {
-                // console.log('obstacle set');
                 node.weight = 0;
                 visualisation.addObstacle({x: node.x, y: node.y});
             },
             removeObstacle(node) {
-                // console.log('obstacle removed');
                 node.weight = 1;
                 visualisation.removeObstacle({x: node.x, y: node.y});
             },
             removeAllObstacles() {
-                // console.log('removed all');
                 graph.grid.forEach(function(element) {
                     element.forEach(function(elem) {
                         elem.weight = 1;

@@ -178,50 +178,56 @@ function goTo(that, destination) {
 window.Simulation = Simulation;
 
 // set up WebSocket
-let ws = new WebSocket('ws://localhost:3000');
+let ws = new WebSocket('ws://172.20.10.3:5679');
 let response;
+
+let received = false;
 
 ws.onmessage = event => {
 
-    const markers = JSON.parse(event.data);
+    if(!received) {
+        received = true;
 
-    // start the simulation
-    const sim = new Simulation(markers);
-    const control = sim.getChairControl();
-    const path = sim.path();
-    window.sim = sim;
+        const markers = JSON.parse(event.data);
 
-    sim.getChairControl().start();
+        // start the simulation
+        const sim = new Simulation(markers);
+        const control = sim.getChairControl();
+        const path = sim.path();
+        window.sim = sim;
 
-    // make astar api available to window
-    window.path = sim.path();
+        sim.getChairControl().start();
 
-    // make chairs available
-    window.chairs = sim.getChairControl().getChairs();
+        // make astar api available to window
+        window.path = sim.path();
 
-    // move all chairs to set position
-    for (var i = 0; i < chairs.length; i++) {
-        goTo(chairs[i], destination);
+        // make chairs available
+        window.chairs = sim.getChairControl().getChairs();
+
+        // move all chairs to set position
+        for (var i = 0; i < chairs.length; i++) {
+            goTo(chairs[i], destination);
+        }
+
+        let formationOneButton = document.querySelector('.formation-one');
+        let formationTwoButton = document.querySelector('.formation-two');
+        let formationThreeButton = document.querySelector('.formation-three');
+        let formationFourButton = document.querySelector('.formation-four');
+
+        formationOneButton.addEventListener('click', function (e) {
+            sim.formationOne();
+        });
+
+        formationTwoButton.addEventListener('click', function (e) {
+            sim.formationTwo();
+        });
+
+        formationThreeButton.addEventListener('click', function (e) {
+            sim.formationThree();
+        });
+
+        formationFourButton.addEventListener('click', function (e) {
+            sim.formationFour();
+        });
     }
-
-    let formationOneButton = document.querySelector('.formation-one');
-    let formationTwoButton = document.querySelector('.formation-two');
-    let formationThreeButton = document.querySelector('.formation-three');
-    let formationFourButton = document.querySelector('.formation-four');
-
-    formationOneButton.addEventListener('click', function (e) {
-        sim.formationOne();
-    });
-
-    formationTwoButton.addEventListener('click', function (e) {
-        sim.formationTwo();
-    });
-
-    formationThreeButton.addEventListener('click', function (e) {
-        sim.formationThree();
-    });
-
-    formationFourButton.addEventListener('click', function (e) {
-        sim.formationFour();
-    });
 };
